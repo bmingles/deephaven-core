@@ -29,6 +29,7 @@ RUN set -eux; \
     /includes/deephaven_core/proto/application.proto \
     /includes/deephaven_core/proto/inputtable.proto \
     /includes/deephaven_core/proto/partitionedtable.proto \
+    /includes/deephaven_core/proto/remotefilesource.proto \
     /includes/deephaven_core/proto/config.proto \
     /includes/deephaven_core/proto/hierarchicaltable.proto \
     /includes/deephaven_core/proto/storage.proto; \
@@ -48,6 +49,7 @@ RUN set -eux; \
     /includes/deephaven_core/proto/application.proto \
     /includes/deephaven_core/proto/inputtable.proto \
     /includes/deephaven_core/proto/partitionedtable.proto \
+    /includes/deephaven_core/proto/remotefilesource.proto \
     /includes/deephaven_core/proto/config.proto \
     /includes/deephaven_core/proto/hierarchicaltable.proto \
     /includes/deephaven_core/proto/storage.proto; \
@@ -63,6 +65,7 @@ RUN set -eux; \
     /includes/deephaven_core/proto/application.proto \
     /includes/deephaven_core/proto/inputtable.proto \
     /includes/deephaven_core/proto/partitionedtable.proto \
+    /includes/deephaven_core/proto/remotefilesource.proto \
     /includes/deephaven_core/proto/config.proto \
     /includes/deephaven_core/proto/hierarchicaltable.proto \
     /includes/deephaven_core/proto/storage.proto; \
@@ -82,6 +85,7 @@ RUN set -eux; \
     /includes/deephaven_core/proto/application.proto \
     /includes/deephaven_core/proto/inputtable.proto \
     /includes/deephaven_core/proto/partitionedtable.proto \
+    /includes/deephaven_core/proto/remotefilesource.proto \
     /includes/deephaven_core/proto/config.proto \
     /includes/deephaven_core/proto/hierarchicaltable.proto \
     /includes/deephaven_core/proto/storage.proto; \
@@ -153,6 +157,12 @@ RUN set -eux; \
   /opt/protoc/bin/protoc \
     --plugin=protoc-gen-doc=/usr/local/bin/protoc-gen-doc \
     --doc_out=generated/proto-doc/multi-html \
+    --doc_opt=html,remotefilesource.html \
+    -I/includes \
+    /includes/deephaven_core/proto/remotefilesource.proto; \
+  /opt/protoc/bin/protoc \
+    --plugin=protoc-gen-doc=/usr/local/bin/protoc-gen-doc \
+    --doc_out=generated/proto-doc/multi-html \
     --doc_opt=html,config.html \
     -I/includes \
     /includes/deephaven_core/proto/config.proto; \
@@ -217,6 +227,12 @@ RUN set -eux; \
     --doc_opt=markdown,partitionedtable.md \
     -I/includes \
     /includes/deephaven_core/proto/partitionedtable.proto; \
+  /opt/protoc/bin/protoc \
+    --plugin=protoc-gen-doc=/usr/local/bin/protoc-gen-doc \
+    --doc_out=generated/proto-doc/multi-md \
+    --doc_opt=markdown,remotefilesource.md \
+    -I/includes \
+    /includes/deephaven_core/proto/remotefilesource.proto; \
   /opt/protoc/bin/protoc \
     --plugin=protoc-gen-doc=/usr/local/bin/protoc-gen-doc \
     --doc_out=generated/proto-doc/multi-md \
