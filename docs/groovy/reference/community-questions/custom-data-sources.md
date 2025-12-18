@@ -62,7 +62,7 @@ Key features of dynamic tables:
 - Use the same `ArrayBackedColumnSource` as static tables.
 - Poll for updates on each Deephaven update cycle.
 - Track both current and previous values for incremental computation.
-- Notify listeners using [`notifyListeners`](https://docs.deephaven.io/core/javadoc/io/deephaven/engine/table/impl/BaseTable.html#notifyListeners(io.deephaven.engine.table.TableUpdate)).
+- Notify listeners using [`notifyListeners`](<https://docs.deephaven.io/core/javadoc/io/deephaven/engine/table/impl/BaseTable.html#notifyListeners(io.deephaven.engine.table.TableUpdate)>).
 
 Here's a simplified example of a dynamic table that updates periodically:
 
@@ -116,13 +116,13 @@ updateTrigger.addUpdateListener(new io.deephaven.engine.table.impl.InstrumentedT
     public void onUpdate(io.deephaven.engine.table.TableUpdate upstream) {
         // Example update logic: Modify prices for rows 0-9
         RowSet modifiedRows = RowSetFactory.fromRange(0, 9)
-        
+
         // Update the column source values
         for (long i = 0; i < 10; i++) {
             double newPrice = prices[(int)i] + Math.random() * 10.0
             priceSource.set(i, newPrice)
         }
-        
+
         // Create a TableUpdate describing the changes
         TableUpdateImpl update = new TableUpdateImpl(
             RowSetFactory.empty(),  // added rows
@@ -131,11 +131,11 @@ updateTrigger.addUpdateListener(new io.deephaven.engine.table.impl.InstrumentedT
             RowSetShiftData.EMPTY,  // row shifts
             ModifiedColumnSet.ALL   // modified columns (all columns marked as modified)
         )
-        
+
         // Notify listeners of the update
         dynamicTable.notifyListeners(update)
     }
-    
+
     @Override
     public void onFailureInternal(Throwable originalException, Entry sourceEntry) {
         originalException.printStackTrace()
@@ -179,30 +179,30 @@ import io.deephaven.chunk.attributes.Values
 class CustomFileColumnSource implements ColumnSource<Double> {
     private final File dataFile
     private final Map<Long, Double> cache = new HashMap<>()
-    
+
     CustomFileColumnSource(File dataFile) {
         this.dataFile = dataFile
     }
-    
+
     @Override
     Double get(long rowKey) {
         // Check cache first
         if (cache.containsKey(rowKey)) {
             return cache.get(rowKey)
         }
-        
+
         // Read from disk and cache
         double value = readValueFromDisk(rowKey)
         cache.put(rowKey, value)
         return value
     }
-    
+
     @Override
     void fillChunk(FillContext context, WritableChunk<? super Values> destination, RowSequence rowSequence) {
         // Efficiently read multiple values at once
         // Implementation depends on your file format
     }
-    
+
     private double readValueFromDisk(long rowKey) {
         // Your custom logic to read from disk
         // This is where you'd implement file format-specific reading
