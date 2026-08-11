@@ -1,0 +1,95 @@
+{
+  "name": "Default",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git-lfs:1": {
+      "autoPull": false
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "installGradle": true,
+      "version": "21",
+      // 17 & 25 Used for certain CI tests. TBD whether we need in devcontainer
+      // "additionalVersions": "17,25",
+      "jdkDistro": "tem",
+      "gradleVersion": "latest",
+      "mavenVersion": "latest",
+      "antVersion": "latest",
+      "groovyVersion": "latest"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "nodeGypDependencies": true,
+      "version": "latest",
+      "pnpmVersion": "none",
+      "nvmVersion": "latest"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "installTools": true,
+      "version": "3.12"
+    }
+  },
+  "remoteEnv": {
+    "LANG": "en_US.utf8",
+    "PROJECT_PATH": "${containerWorkspaceFolder}",
+    "TZ": "America/Chicago",
+    // Stop the Claude CLI from overwriting the terminal title with the current
+    // task, so the project-name title set in bashrc-additions.sh persists.
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1",
+    "DEEPHAVEN_CORE_SKIP_DOCKER_IMAGE_CHECK": "1"
+  },
+  "initializeCommand": "bash \"${localWorkspaceFolder}/.devcontainer/initialize-command.sh\"",
+  "postAttachCommand": "bash \"${containerWorkspaceFolder}/.devcontainer/post-attach.sh\"",
+  "postCreateCommand": "bash \"${containerWorkspaceFolder}/.devcontainer/post-create.sh\"",
+  "mounts": [
+    // ~/.claude folder
+    "type=volume,source=claude-code-config-${localWorkspaceFolderBasename},target=/home/vscode/.claude",
+
+    // ~/.claude.json (auth) persisted per-workspace via volume, mounted in devc's namespace
+    // (alongside claude-seed, out of ~); agents-setup.sh symlinks ~/.claude.json to it
+    "type=volume,source=claude-json-${localWorkspaceFolderBasename},target=/usr/local/share/devc/claude-json",
+
+    // Host ~/.claude config seed: agents-setup.sh symlinks every top-level *file* from here
+    // into ~/.claude. Directories are ignored — the devc:skills fence owns ~/.claude/skills/.
+    "type=bind,source=${localEnv:HOME}/.config/devc/.claude,target=/usr/local/share/devc/claude-seed,consistency=cached,readonly",
+
+    // Git identity extracted from the host by initialize-command.sh. Read-only, and
+    // deliberately not the host's ~/.gitconfig — see that script for why.
+    "type=bind,source=${localEnv:HOME}/.config/devc/gitconfig-identity,target=/usr/local/share/devc/gitconfig-identity,consistency=cached,readonly",
+
+    // User-level shell customization: every *.sh in here is sourced by every interactive
+    // container shell, before the project's own .devcontainer/shell/. See the devc:shell-dirs
+    // block in scripts/bashrc-additions.sh. Read-only and live — host edits apply to the next
+    // new shell. initialize-command.sh creates the source, since a bind mount will not.
+    "type=bind,source=${localEnv:HOME}/.config/devc/shell,target=/usr/local/share/devc/shell,consistency=cached,readonly"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "claudeCode.allowDangerouslySkipPermissions": true,
+        "claudeCode.initialPermissionMode": "bypassPermissions",
+        "chat.agent.maxRequests": 50,
+        "chat.tools.terminal.autoApprove": { "/.*/": true },
+        "chat.tools.terminal.ignoreDefaultAutoApproveRules": true,
+        "editor.formatOnSave": true,
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "workbench.colorCustomizations": {
+          "statusBar.background": "#7c3aed",
+          "statusBar.foreground": "#ffffff",
+          "titleBar.activeBackground": "#7c3aed",
+          "titleBar.activeForeground": "#ffffff",
+          "titleBar.inactiveBackground": "#5b21b6",
+          "titleBar.inactiveForeground": "#ffffff",
+          "chat.requestBorder": "#e21010",
+          "statusBarItem.remoteBackground": "#e21010"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+. .venv-devcontainer/bin/activate
