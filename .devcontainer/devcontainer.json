@@ -5,29 +5,8 @@
     "context": "."
   },
   "features": {
-    "ghcr.io/devcontainers/features/git-lfs:1": {
-      "autoPull": false
-    },
-    "ghcr.io/devcontainers/features/java:1": {
-      "installGradle": true,
-      "version": "21",
-      // 17 & 25 Used for certain CI tests. TBD whether we need in devcontainer
-      // "additionalVersions": "17,25",
-      "jdkDistro": "tem",
-      "gradleVersion": "latest",
-      "mavenVersion": "latest",
-      "antVersion": "latest",
-      "groovyVersion": "latest"
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "nodeGypDependencies": true,
-      "version": "latest",
-      "pnpmVersion": "none",
-      "nvmVersion": "latest"
-    },
-    "ghcr.io/devcontainers/features/python:1": {
-      "installTools": true,
-      "version": "3.12"
+    "./features/deephaven-core": {
+      "version": "1.0.0"
     }
   },
   "remoteEnv": {
@@ -40,7 +19,6 @@
     "DEEPHAVEN_CORE_SKIP_DOCKER_IMAGE_CHECK": "1"
   },
   "initializeCommand": "bash \"${localWorkspaceFolder}/.devcontainer/initialize-command.sh\"",
-  "postAttachCommand": "bash \"${containerWorkspaceFolder}/.devcontainer/post-attach.sh\"",
   "postCreateCommand": "bash \"${containerWorkspaceFolder}/.devcontainer/post-create.sh\"",
   "mounts": [
     // ~/.claude folder

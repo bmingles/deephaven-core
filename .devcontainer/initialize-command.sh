@@ -32,7 +32,13 @@ email="$(git config --get user.email || true)"
 [ -n "$name" ] && git config --file "$identity" user.name "$name"
 [ -n "$email" ] && git config --file "$identity" user.email "$email"
 
-# Explicit, because the tests above are the last thing to run: an unset name or email leaves
-# the final `[ -n ... ]` failing, and a non-zero initializeCommand aborts container creation.
-# A host with no git identity is a warning (from scripts/git-setup.sh), not a failure.
+# No devc-bridge setup here, deliberately. The bridge is an opt-in add-on, and devc does not
+# create its directories on hosts that may never use it. Its mount sources are made by the
+# host bridge itself (`devc-bridge start` seeds ~/.config/devc-bridge/), which is the
+# documented prerequisite for opting in — see features/devc-bridge/README.md.
+
+# Explicit, because the git-identity tests above are the last thing that can set $?: an unset
+# name or email leaves the final `[ -n ... ]` failing, and a non-zero initializeCommand aborts
+# container creation. A host with no git identity is a warning (from scripts/git-setup.sh),
+# not a failure.
 exit 0
