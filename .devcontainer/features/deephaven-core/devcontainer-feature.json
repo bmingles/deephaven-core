@@ -1,6 +1,6 @@
 {
   "id": "deephaven-core",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "name": "Deephaven Core Feature Bundle",
   "postAttachCommand": "/usr/local/share/deephaven-core-post-attach.sh",
   "dependsOn": {
