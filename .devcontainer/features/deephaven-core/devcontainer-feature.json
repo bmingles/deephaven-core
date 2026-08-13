@@ -1,6 +1,6 @@
 {
   "id": "deephaven-core",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "name": "Deephaven Core Feature Bundle",
 
   // The Python virtualenv install.sh creates, declared rather than "activated".
