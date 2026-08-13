@@ -36,7 +36,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # Inputs are passed through env rather than interpolated into the script body, so a
       # crafted namespace cannot break out into shell.
@@ -76,7 +76,15 @@ jobs:
           NAMESPACE: ${{ steps.ns.outputs.namespace }}
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          version="$(node -p "require('./.devcontainer/features/deephaven-core/devcontainer-feature.json').version")"
+          # Read the version from the collection manifest the CLI generated, never from
+          # devcontainer-feature.json directly: the source file is JSONC (it carries
+          # comments), and strict parsers — `require()` included — reject it.
+          collection=/tmp/feature-pkg/devcontainer-collection.json
+          if [ ! -f "$collection" ]; then
+            echo "Packaging did not complete — no summary to report." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          version="$(node -p "require('$collection').features[0].version")"
           {
             echo "### deephaven-core devcontainer Feature"
             echo
