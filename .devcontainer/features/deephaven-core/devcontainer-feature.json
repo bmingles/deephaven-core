@@ -2,6 +2,17 @@
   "id": "deephaven-core",
   "version": "0.1.0",
   "name": "Deephaven Core Feature Bundle",
+  // Plain text, no markdown or HTML — implementing tools render it verbatim in listings.
+  "description": "Toolchain bundle for Deephaven Community Core development: Java, Gradle, Node, Python and Git LFS, plus a preconfigured Python virtualenv that is active for every process in the container.",
+
+  // Informational metadata only — registries and `features generate-docs` surface these;
+  // nothing in the install path reads them. Both point at the upstream repo rather than a
+  // fork, so they stay correct once this is published from deephaven/deephaven-core.
+  //
+  // The Feature carries no license of its own: it is ordinary source in this repo and is
+  // governed by the repo's LICENSE.md, which licenseURL points at.
+  "documentationURL": "https://github.com/deephaven/deephaven-core/tree/main/.devcontainer/features/deephaven-core",
+  "licenseURL": "https://github.com/deephaven/deephaven-core/blob/main/LICENSE.md",
 
   // The Python virtualenv install.sh creates, declared rather than "activated".
   //
