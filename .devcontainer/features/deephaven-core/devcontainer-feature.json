@@ -1,8 +1,41 @@
 {
   "id": "deephaven-core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "name": "Deephaven Core Feature Bundle",
-  "postAttachCommand": "/usr/local/share/deephaven-core-post-attach.sh",
+
+  // The Python virtualenv install.sh creates, declared rather than "activated".
+  //
+  // `activate` does exactly two things that matter: export VIRTUAL_ENV and prepend the
+  // venv's bin/ to PATH. Setting both here makes them container ENV, so *every* process
+  // inherits them — lifecycle scripts, gradle/node subprocesses, VS Code tasks and
+  // extensions, coding agents and the MCP servers they spawn. Sourcing `activate` from
+  // ~/.bashrc reaches only interactive bash, which left every one of those on the system
+  // interpreter while the developer's own terminal was on the venv.
+  //
+  // This is the same mechanism the python feature below uses to put
+  // /usr/local/python/current/bin on PATH. ${PATH} is expanded at image-build time
+  // against the ENV the depended-on features have already contributed.
+  //
+  // The path is an absolute literal, not ${containerWorkspaceFolder}/...: a feature's
+  // containerEnv becomes a Dockerfile ENV, where devcontainer workspace variables are not
+  // available. See install.sh for the other reasons the venv lives outside the workspace.
+  "containerEnv": {
+    "VIRTUAL_ENV": "/usr/local/share/deephaven-core/venv",
+    "PATH": "/usr/local/share/deephaven-core/venv/bin:${PATH}"
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // Keep the Python extension on the same interpreter as the terminals. Its
+        // auto-discovery scans the workspace root for .venv/venv/.conda, and would find
+        // nothing now that the venv lives outside the workspace — leaving Pylance and the
+        // test explorer to resolve some other python.
+        "python.defaultInterpreterPath": "/usr/local/share/deephaven-core/venv/bin/python"
+      }
+    }
+  },
+
   "dependsOn": {
     "ghcr.io/devcontainers/features/git-lfs:1": {
       "autoPull": false

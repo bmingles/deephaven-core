@@ -5,9 +5,7 @@
     "context": "."
   },
   "features": {
-    "./features/deephaven-core": {
-      "version": "1.0.0"
-    }
+    "./features/deephaven-core": {}
   },
   "remoteEnv": {
     "LANG": "en_US.utf8",
