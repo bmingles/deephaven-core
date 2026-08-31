@@ -1,14 +1,34 @@
 {
   "features": {
+    "ghcr.io/devc-tools/features/agents:0": {
+      "version": "0.1.0",
+      "resolved": "ghcr.io/devc-tools/features/agents@sha256:fbab8e2ea0982f3e001b58626a9a3b497af1091f919096d1340f62d0fdbac7aa",
+      "integrity": "sha256:fbab8e2ea0982f3e001b58626a9a3b497af1091f919096d1340f62d0fdbac7aa"
+    },
+    "ghcr.io/devc-tools/features/bash-config:0": {
+      "version": "0.1.0",
+      "resolved": "ghcr.io/devc-tools/features/bash-config@sha256:b8e4d2167c56d87b746febcd279bcd3d5d7322bec35973f552e7e686e8f53a19",
+      "integrity": "sha256:b8e4d2167c56d87b746febcd279bcd3d5d7322bec35973f552e7e686e8f53a19"
+    },
+    "ghcr.io/devc-tools/features/devc-config:0.1.0": {
+      "version": "0.1.0",
+      "resolved": "ghcr.io/devc-tools/features/devc-config@sha256:0dcbc0f98dc472acf666ef2f5a9500a3d00e6edfc7e0bcaa87a3ed2c6ccaba61",
+      "integrity": "sha256:0dcbc0f98dc472acf666ef2f5a9500a3d00e6edfc7e0bcaa87a3ed2c6ccaba61"
+    },
+    "ghcr.io/devc-tools/features/node-nvmrc:0": {
+      "version": "0.1.0",
+      "resolved": "ghcr.io/devc-tools/features/node-nvmrc@sha256:fd68e071e92f74f8f76b5a9578366b3e7cf6cd28f43a36636998103ba79ed467",
+      "integrity": "sha256:fd68e071e92f74f8f76b5a9578366b3e7cf6cd28f43a36636998103ba79ed467"
+    },
     "ghcr.io/devcontainers/features/git-lfs:1": {
       "version": "1.2.5",
       "resolved": "ghcr.io/devcontainers/features/git-lfs@sha256:71c2b371cf12ab7fcec47cf17369c6f59156100dad9abf9e4c593049d789de72",
       "integrity": "sha256:71c2b371cf12ab7fcec47cf17369c6f59156100dad9abf9e4c593049d789de72"
     },
     "ghcr.io/devcontainers/features/java:1": {
-      "version": "1.8.1",
-      "resolved": "ghcr.io/devcontainers/features/java@sha256:8157bab2d8d71e40b2f3128c162fab763e2b11038fdd33784549290a5d386b48",
-      "integrity": "sha256:8157bab2d8d71e40b2f3128c162fab763e2b11038fdd33784549290a5d386b48"
+      "version": "1.8.2",
+      "resolved": "ghcr.io/devcontainers/features/java@sha256:7d2fc86e0dad756209cd68da6b2b43e6149a5e07232a9f20663c42a8ca1563ad",
+      "integrity": "sha256:7d2fc86e0dad756209cd68da6b2b43e6149a5e07232a9f20663c42a8ca1563ad"
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "1.7.1",

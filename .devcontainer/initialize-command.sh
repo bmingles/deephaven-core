@@ -1,20 +1,8 @@
 #!/bin/bash
-# devc host-side init (devcontainer "initializeCommand").
-#
-# Runs on the HOST, before the container is created — the only lifecycle hook that
-# does. Its job: ensure the bind-mount sources exist, because `--mount type=bind`
-# errors on a missing source rather than creating it. So a clone of this
-# .devcontainer/ comes up cleanly even for someone who has never run `devc` (the
-# `devc` CLI otherwise guarantees the ~/.claude one itself via ensureClaudeSeedDir).
-#
-# Idempotent; also runs on subsequent starts.
+# devc host-side init (devcontainer "initializeCommand"). Runs on the HOST,
+# before the container is created — the only lifecycle hook that does.
 set -e
 mkdir -p "$HOME/.config/devc/.claude"
-
-# User-level shell customization: every *.sh here is sourced by every interactive container
-# shell (see the USER_SHELL_DIR layer in scripts/bashrc-additions.sh). Created empty so the
-# mount source exists; devc never writes into it.
-mkdir -p "$HOME/.config/devc/shell"
 
 # Git identity for the container. ~/.gitconfig is container-local and wiped on every
 # rebuild, so the container has no idea who you are. Rather than bind the whole host
@@ -39,6 +27,6 @@ email="$(git config --get user.email || true)"
 
 # Explicit, because the git-identity tests above are the last thing that can set $?: an unset
 # name or email leaves the final `[ -n ... ]` failing, and a non-zero initializeCommand aborts
-# container creation. A host with no git identity is a warning (from scripts/git-setup.sh),
-# not a failure.
+# container creation. A host with no git identity is a warning (from the git-container-config
+# Feature's post-create.sh), not a failure.
 exit 0
