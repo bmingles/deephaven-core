@@ -1,24 +1,34 @@
 {
   "features": {
     "ghcr.io/devc-tools/features/agents:0": {
-      "version": "0.1.0",
-      "resolved": "ghcr.io/devc-tools/features/agents@sha256:fbab8e2ea0982f3e001b58626a9a3b497af1091f919096d1340f62d0fdbac7aa",
-      "integrity": "sha256:fbab8e2ea0982f3e001b58626a9a3b497af1091f919096d1340f62d0fdbac7aa"
+      "version": "0.2.1",
+      "resolved": "ghcr.io/devc-tools/features/agents@sha256:78c6951f7bd2fc51e06767b1b5bc1055a1e38eefd4fd0d30277534f136a92564",
+      "integrity": "sha256:78c6951f7bd2fc51e06767b1b5bc1055a1e38eefd4fd0d30277534f136a92564"
     },
     "ghcr.io/devc-tools/features/bash-config:0": {
-      "version": "0.1.0",
-      "resolved": "ghcr.io/devc-tools/features/bash-config@sha256:b8e4d2167c56d87b746febcd279bcd3d5d7322bec35973f552e7e686e8f53a19",
-      "integrity": "sha256:b8e4d2167c56d87b746febcd279bcd3d5d7322bec35973f552e7e686e8f53a19"
+      "version": "0.1.1",
+      "resolved": "ghcr.io/devc-tools/features/bash-config@sha256:9253dc98d8da0438eb3c7c04fa0270d544ae2da05f7bf06214e1bcb69ba631f9",
+      "integrity": "sha256:9253dc98d8da0438eb3c7c04fa0270d544ae2da05f7bf06214e1bcb69ba631f9"
     },
-    "ghcr.io/devc-tools/features/devc-config:0.1.0": {
-      "version": "0.1.0",
-      "resolved": "ghcr.io/devc-tools/features/devc-config@sha256:0dcbc0f98dc472acf666ef2f5a9500a3d00e6edfc7e0bcaa87a3ed2c6ccaba61",
-      "integrity": "sha256:0dcbc0f98dc472acf666ef2f5a9500a3d00e6edfc7e0bcaa87a3ed2c6ccaba61"
+    "ghcr.io/devc-tools/features/devc-config:0.1.1": {
+      "version": "0.1.1",
+      "resolved": "ghcr.io/devc-tools/features/devc-config@sha256:6e3b45ab66f87a30cee099591bd4270d5de586a9bd93d7175feb8f613a3d957a",
+      "integrity": "sha256:6e3b45ab66f87a30cee099591bd4270d5de586a9bd93d7175feb8f613a3d957a"
+    },
+    "ghcr.io/devc-tools/features/git-container-config:0": {
+      "version": "0.1.1",
+      "resolved": "ghcr.io/devc-tools/features/git-container-config@sha256:f12bfd010e0e2b97af07236fd0b0c8f78ba6ae6c67e81305c951814fd15b1ee2",
+      "integrity": "sha256:f12bfd010e0e2b97af07236fd0b0c8f78ba6ae6c67e81305c951814fd15b1ee2"
     },
     "ghcr.io/devc-tools/features/node-nvmrc:0": {
-      "version": "0.1.0",
-      "resolved": "ghcr.io/devc-tools/features/node-nvmrc@sha256:fd68e071e92f74f8f76b5a9578366b3e7cf6cd28f43a36636998103ba79ed467",
-      "integrity": "sha256:fd68e071e92f74f8f76b5a9578366b3e7cf6cd28f43a36636998103ba79ed467"
+      "version": "0.2.1",
+      "resolved": "ghcr.io/devc-tools/features/node-nvmrc@sha256:791358161c39e2579a7bb4ae13abb80b8b79c64aa9ef323f4b521c70204028a5",
+      "integrity": "sha256:791358161c39e2579a7bb4ae13abb80b8b79c64aa9ef323f4b521c70204028a5"
+    },
+    "ghcr.io/devc-tools/features/podman-as-docker:0": {
+      "version": "0.1.3",
+      "resolved": "ghcr.io/devc-tools/features/podman-as-docker@sha256:6e5fc4f688a99abe02b7224820659480948f11d08f0e780b9842f6602e89420b",
+      "integrity": "sha256:6e5fc4f688a99abe02b7224820659480948f11d08f0e780b9842f6602e89420b"
     },
     "ghcr.io/devcontainers/features/git-lfs:1": {
       "version": "1.2.5",
