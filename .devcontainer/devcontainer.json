@@ -92,8 +92,7 @@
     // see that script for why.
     "type=bind,source=${localEnv:HOME}/.config/devc/gitconfig-identity,target=/usr/local/share/devc-features/git-container-config/identity/gitconfig,consistency=cached,readonly",
 
-    "type=volume,source=node-modules-types-${devcontainerId},target=${containerWorkspaceFolder}/web/client-api/types/node_modules",
-    "type=volume,source=node-modules-${devcontainerId},target=${containerWorkspaceFolder}/web/client-api/types/node_modules"
+    "type=volume,source=node-modules-types-${devcontainerId},target=${containerWorkspaceFolder}/web/client-api/types/node_modules"
   ],
   "customizations": {
     "vscode": {
