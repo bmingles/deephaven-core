@@ -14,7 +14,7 @@
 #
 # Every path exits 0. A failing postCreateCommand aborts container creation, and neither of
 # these steps is worth an unbootable container: without the venv you get a loud Python
-# error on first use, without dnsname you lose only the multi-container test family. Both
+# error on first use, without the cache-volume chown gradle just cannot write its cache. Both
 # are recoverable from inside a running container; a container that will not start is not.
 set -u
 
@@ -69,52 +69,7 @@ if [ ! -x "$VENV_DIR/bin/python" ]; then
   fi
 fi
 
-# --- 2. Podman container-name DNS for the gradle deephaven-in-docker tests ---------------
-#
-# Podman here resolves custom networks through CNI, and the packaged CNI plugin set
-# (/usr/lib/cni) ships no `dnsname` — so a network created by `podman network create` comes
-# up with no name resolution at all. This installs that one missing plugin; `podman network
-# create` then adds dnsname to the plugin chain on its own, and no containers.conf change
-# is needed. dnsmasq-base is the resolver dnsname drives, and is not pulled in implicitly.
-#
-# That matters because the `deephaven-in-docker` gradle plugin
-# (buildSrc/.../DeephavenInDockerExtension.groovy) starts the DH server container on a
-# per-run network and passes the test container `DH_HOST=<server container name>`,
-# expecting DNS on that network to resolve it. Without this the whole family of
-# multi-container tests fails: :py-client:testPyClient, :go:testGoClient, :R:testRClient,
-# :cpp-client:testCppClient, :py-client-ticking:testCPythonClientTicking-*, and
-# web/client-api — all of which are wired into `check`.
-#
-# NOT netavark/aardvark-dns, which looks like the modern choice and is a dead end here:
-# noble pairs podman 4.9.3 with netavark 1.4.0, and with `network_backend = "netavark"`
-# pinned, `podman network create` writes to netavark's store while the *container runtime*
-# still loads CNI ("Successfully loaded 1 networks" in `podman --log-level=debug run`), so
-# every `--network <name>` fails with "network not found" even though `network ls` and
-# `network inspect` show it. Verified working on CNI + dnsname instead: resolution by
-# container name plus an HTTP fetch between two containers on a created network.
-#
-# Requires /dev/net/tun (see runArgs in devcontainer.json) — without a real rootless netns
-# there are no custom networks for this to serve.
-#
-# Note this only fixes network *plumbing*. The deephaven-in-docker tests additionally wait
-# on the server container's HEALTHCHECK, and podman schedules healthchecks through systemd
-# transient timers — with no systemd in this container the status stays "starting" forever
-# and `waitForHealthy` times out against a server that is demonstrably up. Those tests
-# therefore still do not pass in-container; `podman healthcheck run <container>` works when
-# invoked by hand, so a poller could drive them if that is ever worth doing.
-if command -v apt-get > /dev/null 2>&1; then
-  export DEBIAN_FRONTEND=noninteractive
-  if sudo -n apt-get update -qq 2> /dev/null &&
-    sudo -n apt-get install -y --no-install-recommends \
-      golang-github-containernetworking-plugin-dnsname dnsmasq-base > /dev/null; then
-    :
-  else
-    warn "dnsname plugin unavailable — podman container-name DNS will not work"
-  fi
-  sudo -n rm -rf /var/lib/apt/lists/* 2> /dev/null || true
-fi
-
-# --- 3. Ownership of the gradle cache volume ---------------------------------------------
+# --- 2. Ownership of the gradle cache volume ---------------------------------------------
 #
 # The gradle-cache-${devcontainerId} mount in devcontainer.json targets ~/.gradle, a path
 # that does not exist in the image. Docker seeds a new named volume from whatever the image

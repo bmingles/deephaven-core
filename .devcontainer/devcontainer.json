@@ -40,18 +40,31 @@
     "ghcr.io/devc-tools/features/node-nvmrc:0": {
       "projectDir": "web/client-api/types"
     },
-    // Needed for `podman run --network <name>`, which the gradle deephaven-in-docker tests
-    // (:py-client, :go, :R, :cpp-client, web/client-api) rely on to reach the server
-    // container by name. Requires the /dev/net/tun device below, and the CNI dnsname plugin
-    // post-create.sh installs.
+    // On a rootless Linux Docker host the workspace bind mount is owned by container uid 0, so
+    // this makes `vscode` uid 0 there (same name, same home). A no-op on Docker Desktop and
+    // on rootful daemons — `id` still says uid 1000 on a Mac.
+    "ghcr.io/devc-tools/features/rootless-remap:0": {},
+
+    // Nested containers via podman, with no capability granted to this devcontainer (0.2.0).
+    // slirp4netns gives nested containers their own networks with name DNS, which the gradle
+    // deephaven-in-docker tests (:py-client, :go, :R, :cpp-client, web/client-api) rely on to
+    // reach the server container by name. Requires the tun device and the seccomp profile in
+    // runArgs below.
     "ghcr.io/devc-tools/features/podman-as-docker:0": {
       "rootlessNetworkCmd": "slirp4netns"
     }
   },
 
-  // Required by rootlessNetworkCmd above: slirp4netns opens /dev/net/tun, which is not in
-  // the container's /dev by default. A Feature cannot grant a device, so it has to be here.
-  "runArgs": ["--device=/dev/net/tun"],
+  // Both required by podman-as-docker, and both things a Feature cannot declare:
+  //  - the seccomp profile: Docker's default profile with one added rule allowing the namespace
+  //    and mount syscalls inside user namespaces the container owns. It is read by the Docker
+  //    CLI on the *host*, hence a file in this repo. Grants no capability; see the Feature's
+  //    README for what it does open.
+  //  - /dev/net/tun: slirp4netns opens it, and it is not in the container's /dev by default.
+  "runArgs": [
+    "--security-opt", "seccomp=${localWorkspaceFolder}/.devcontainer/seccomp-podman.json",
+    "--device=/dev/net/tun"
+  ],
 
   // The venv post-create.sh creates, exported rather than `activate`d so every process gets
   // it: lifecycle scripts, terminals, gradle/node subprocesses, VS Code, coding agents.
@@ -70,7 +83,7 @@
   },
   "initializeCommand": "bash \"${localWorkspaceFolder}/.devcontainer/initialize-command.sh\"",
 
-  // Creates the venv remoteEnv points at, and installs the CNI dnsname plugin.
+  // Creates the venv remoteEnv points at, and fixes ownership of the gradle cache volume.
   "postCreateCommand": "bash .devcontainer/post-create.sh",
 
   // Builds and installs the Deephaven Python wheels so `./gradlew server-jetty-app:run`
