@@ -1,0 +1,41 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    // Java. The Extension Pack comes from the java Feature; its Gradle build server (on by
+    // default) supplies the classpath.
+    //
+    // Gradle compiles, not the language server: autobuild would rebuild the workspace on
+    // every save and write bin/ folders into the repo.
+    "java.autobuild.enabled": false,
+    // The language server's apt init script fails under Gradle 9. Generated sources
+    // (Immutables, protoc) come from Gradle builds instead.
+    "java.import.gradle.annotationProcessing.enabled": false,
+    // The extension's defaults with -Xmx raised from 2G; the 2G heap hits its cap on import.
+    // This replaces the whole default string, so keep the other flags.
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable",
+    // Spotless's formatter config, so formatOnSave matches spotlessCheck.
+    "java.format.settings.url": "style/eclipse-java-google-style.xml",
+    "java.format.settings.profile": "DeephavenStyle",
+
+    // From Deephaven Core's Web UI dark palette: --dh-color-accent #3b6bda
+    // (with its down state #254ba4 for the inactive title bar),
+    // --dh-color-fg #f0f0ee, --dh-color-negative #c73f61.
+    "workbench.colorCustomizations": {
+      "statusBar.background": "#3b6bda",
+      "statusBar.foreground": "#f0f0ee",
+      "titleBar.activeBackground": "#3b6bda",
+      "titleBar.activeForeground": "#f0f0ee",
+      "titleBar.inactiveBackground": "#254ba4",
+      "titleBar.inactiveForeground": "#f0f0ee",
+      "chat.requestBorder": "#c73f61",
+      "statusBarItem.remoteBackground": "#c73f61"
+    }
+  },
+  "extensions": {
+    "recommendations": ["vscjava.vscode-java-pack"]
+  }
+}
